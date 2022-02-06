@@ -1,0 +1,20 @@
+@import './base/reset';
+@import './components/backdrop';
+@import './components/modal';
+@import './components/loader';
+@import './components/slider';
+@import './utils/vars';
+@import './base/container';
+@import './utils/hidden';
+@import './utils/mixins';
+@import './layout/header';
+@import './layout/genres';
+@import './layout/gallery';
+@import './layout/pagination';
+@import './layout/footer';
+@import './layout/switcher';
+@import './components/modal-team';
+@import './components/filter-btn';
+@import './components/teaser';
+
+@import './layout/scroll';

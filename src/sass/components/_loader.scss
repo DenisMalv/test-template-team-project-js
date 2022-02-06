@@ -1,0 +1,17 @@
+.fetchLoader {
+  border: 3px solid #ffffff; /* Light grey */
+  border-top: 3px solid #ff7300; /* orange */
+  border-radius: 50%;
+  width: 21px;
+  height: 20px;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

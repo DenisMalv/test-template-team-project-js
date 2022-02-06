@@ -1,0 +1,73 @@
+<header class="header header__home js-header">
+  <h2 class="title visually-hidden">Movie Navigation</h2>
+  <div class="container header-container">
+    <nav class="header__navigation">
+      <a href="./index.html" class="">
+        <div class="logo__thumb">
+          <svg class="header__icon--logo" width="20" height="20">
+            <use href="./images/sprite.svg#icon-film"></use>
+          </svg>
+
+          <p class="header__logo animate__animated animate__fadeInRightBig animate__slow">
+            Filmoteka
+          </p>
+        </div>
+      </a>
+      <ul class="header__list">
+        <li class="header__item">
+          <a href="/index.html" class="header__link is-current js-home">Home</a>
+        </li>
+        <li class="header__item">
+          <a href="#" class="header__link js-library">My library</a>
+        </li>
+      </ul>
+    </nav>
+
+    <form class="header__form js-header-form" id="search-form">
+      <input
+        class="header__input"
+        type="text"
+        name="query"
+        autocomplete="off"
+        placeholder="Поиск фильмов"
+      />
+      <button class="header__button--search" type="submit">
+        <svg class="header__icon" width="12" height="12">
+          <use href="./images/sprite.svg#icon-search"></use>
+        </svg>
+      </button>
+    </form>
+
+    <p class="error js-header__text-error visually-hidden">
+      Search result not successful. Enter the correct movie name.
+    </p>
+
+    <div class="header__buttons--thumb js-header-thumb">
+      <button type="submit" class="header__button header__button--active js-button-watched">
+        Watched
+      </button>
+      <button type="submit" class="header__button js-button-queue">Queue</button>
+    </div>
+
+    <div class="toolbar">
+      <!-- Разметка кнопки фильтр -->
+      <div class="filter">
+        <button type="button" class="filter_button button-active">Filter</button>
+      </div>
+      <!-- Разметка переключателя темы -->
+      <div class="theme-switch">
+        <div class="theme-switch__control">
+          <input
+            class="theme-switch__toggle"
+            type="checkbox"
+            name="theme"
+            id="theme-switch-toggle"
+            aria-label="Переключить между тёмной и светлой темой"
+          />
+          <label aria-hidden="true" class="theme-switch__track" for="theme-switch-toggle"> </label>
+          <div aria-hidden="true" class="theme-switch__marker"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

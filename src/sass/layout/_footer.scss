@@ -1,0 +1,58 @@
+//позиционирование футера
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.footer {
+  margin-top: auto;
+  font-family: $primary-font;
+  height: 77px;
+  text-align: center;
+  background-color: currentColor;
+}
+.footer.light-theme {
+  background-color: $second-background;
+  color: $second-text-color;
+}
+.footer.dark-theme {
+  background-color: rgb(36, 31, 26);
+  color: $main-text-color;
+}
+
+.favorite-img {
+  width: 14px;
+  height: 13px;
+  margin-left: 5px;
+  margin-right: 5px;
+  animation: heartbeat .75s infinite;
+};
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.25);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+}
+.footer__text {
+  color: currentColor;
+  padding-top: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.19;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @media screen and (min-width: 768px) {
+    flex-wrap: nowrap;
+  }
+}
+.footer__link {
+  cursor: pointer;
+  text-decoration: underline;
+}
