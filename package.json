@@ -3,20 +3,20 @@
   "version": "1.1.0",
   "description": "test-template-team-project-js",
   "main": "index.js",
-  "homepage": "https://denismalv.github.io/goit-js-hw-11-41/",
+  "homepage": "https://denismalv.github.io/test-template-team-project-js/",
   "scripts": {
     "dev": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url https://denismalv.github.io/goit-js-hw-11-41/"
+    "build": "parcel build src/*.html --public-url https://denismalv.github.io/test-template-team-project-js/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DenisMalv/goit-js-hw-11-41.git"
+    "url": "git+https://github.com/DenisMalv/test-template-team-project-js.git"
   },
   "keywords": [],
   "author": "Denis Malniev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DenisMalv/goit-js-hw-11-41/issues"
+    "url": "https://github.com/DenisMalv/test-template-team-project-js/issues"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
