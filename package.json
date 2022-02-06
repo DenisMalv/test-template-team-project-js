@@ -1,22 +1,22 @@
 {
-  "name": "parcel-project-template",
+  "name": "test-template-team-project-js",
   "version": "1.1.0",
-  "description": "",
+  "description": "test-template-team-project-js",
   "main": "index.js",
-  "homepage": "https://MaksymChuraiev.github.io/team-project-js",
+  "homepage": "https://denismalv.github.io/goit-js-hw-11-41/",
   "scripts": {
     "dev": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /team-project-js/"
+    "build": "parcel build src/*.html --public-url https://denismalv.github.io/goit-js-hw-11-41/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goitacademy/parcel-project-template.git"
+    "url": "git+https://github.com/DenisMalv/goit-js-hw-11-41.git"
   },
   "keywords": [],
-  "author": "Alexander Repeta <alexander.repeta@gmail.com>",
+  "author": "Denis Malniev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/goitacademy/parcel-project-template/issues"
+    "url": "https://github.com/DenisMalv/goit-js-hw-11-41/issues"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
