@@ -130,7 +130,6 @@ function markup(data) {
   // }
   if (data.results.length > 0) {
     galleryArrayMarkup(data);
-    modalOpenOnClick();
   } else {
     refs.gallery.insertAdjacentHTML(
       'beforeend',
