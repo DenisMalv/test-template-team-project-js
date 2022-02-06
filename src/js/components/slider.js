@@ -24,12 +24,12 @@ const sliderOptions = {
 };
 
 async function sliderMarkup() {
+  const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
   const sliderList = document.querySelector('.glide__slides');
   let indexOfallUl = 0;
   sliderList.innerHTML = '';
 
-  const sliderMarkup = options.listofFilmforSlider
-    .map(({ poster_path, vote_average, id }) => {
+  const sliderMarkup = listofFilmforSliderGet.map(({ poster_path, vote_average, id }) => {
       if (vote_average > 8) {
         indexOfallUl += 1;
         return `<li class="glide__slide" style="width: 136px; margin-left: 10px; margin-right: 10px;" data-idx="${id}">
@@ -61,19 +61,20 @@ async function onLoadMainPageShowSlider() {
     return;
   }
   await fetchTrandingMovieForSlider();
-  console.log('options.pageNumber', options.pageNumber);
-  console.log('options.listofFilmforSlider', options.listofFilmforSlider);
+  console.log('options.pageNumber', refs.listofFilmforSlider);
+  console.log('options.listofFilmforSlider', refs.listofFilmforSlider);
   await sliderMarkup();
   onClickSlide();
 }
 
 function onClickSlide() {
+  const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
   const listOfSlides = document.querySelectorAll('.glide__slide');
   console.log('listOfSlides', listOfSlides);
   console.dir(listOfSlides);
   listOfSlides.forEach(slide =>
     slide.addEventListener('click', async () => {
-      const sliderFilm = options.listofFilmforSlider.find(
+      const sliderFilm = listofFilmforSliderGet.find(
         trandingFilm => trandingFilm.id == slide.dataset.idx,
       );
       console.log(sliderFilm);

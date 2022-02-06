@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const options = {
-  queryTest: '',
+  queryTestValidator: '',
   query: '',
   pageNumberTest: 1,
   pageNumber: 1,
@@ -12,10 +12,17 @@ export const options = {
   yearId: [],
   maxPage: 0,
   trand: 'day',
-  listofFilmforSlider:[]
+  // listofFilmforSlider:[]
 };
 
-async function fetchPhoto() {
+
+console.log(!JSON.parse(localStorage.getItem('listofFilmforSlider')));
+
+// const listofFilmforSliderSet = localStorage.setItem('listofFilmforSlider',JSON.stringify([]))
+// const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
+
+
+async function fetchMovie() {
   const SEARCH_URL = `https://api.themoviedb.org/3/search/movie?`;
   const params = {
     params: {
@@ -56,22 +63,27 @@ async function fetchTrandingMovie() {
 
 async function fetchTrandingMovieForSlider() {
   try {
+    if (JSON.parse(localStorage.getItem('listofFilmforSlider'))) {
+      return
+    }
+    localStorage.setItem('listofFilmforSlider', JSON.stringify([]))
+    
     for (let pageNum = 0; pageNum <= 5, pageNum += 1;) {
       if (options.pageNumberSlider >= 5) {
         options.pageNumberSlider = 1
         return
       }
-      options.pageNumberSlider +=1
+      let listofFilmforSliderInLS = JSON.parse(localStorage.getItem('listofFilmforSlider'))
       const { data } = await axios.get(
         `https://api.themoviedb.org/3/trending/movie/${options.trand}?api_key=6dae1a863e182d2e5c972909bcd1e575&&page=${options.pageNumberSlider}`,
       );
+      listofFilmforSliderInLS = [...listofFilmforSliderInLS, ...data.results]
+      localStorage.setItem('listofFilmforSlider', JSON.stringify(listofFilmforSliderInLS))
+      options.pageNumberSlider += 1
       
-      options.listofFilmforSlider = [...options.listofFilmforSlider, ...data.results]
-      localStorage.setItem('listofFilmforSliderLS', JSON.stringify(options.listofFilmforSlider))
-      
-      // console.log('pageNum',pageNum)
-      // console.log('options.pageNumber',options.pageNumber)
-      // console.log('options.listofFilmforSlider',options.listofFilmforSlider)
+      console.log('listofFilmforSliderInLS', listofFilmforSliderInLS);
+      console.log('pageNum',pageNum)
+      console.log('options.pageNumber',options.pageNumber)
        
     }
    return data;
@@ -105,16 +117,16 @@ async function fetchTeaser(idMovie) {
   }
 }
 
-export { fetchPhoto, fetchGenres, discoverGenres, fetchTrandingMovie,fetchTrandingMovieForSlider, fetchTeaser,fetchPhotoTest};
+export { fetchMovie, fetchGenres, discoverGenres, fetchTrandingMovie,fetchTrandingMovieForSlider, fetchTeaser,fetchMoviesTestValidator};
 
 
-async function fetchPhotoTest() {
+async function fetchMoviesTestValidator() {
   const SEARCH_URL = `https://api.themoviedb.org/3/search/movie?`;
   const params = {
     params: {
       api_key: '6dae1a863e182d2e5c972909bcd1e575',
       language: `en-US`,
-      query: options.queryTest,
+      query: options.queryTestValidator,
       page: options.pageNumber,
     },
 

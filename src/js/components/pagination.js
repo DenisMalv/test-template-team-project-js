@@ -4,7 +4,7 @@ import {modalOpenOnClick,addListenersOnEachGalleryCard} from './modal'
 
 import { currentFetch, ress, checkFetchLink, onLoadTranding, galleryArrayMarkup, genresMarkup, toggleGenres, removeAllChekedGenres, ratingAddIshidden } from './gallery'
 
-import { fetchPhoto, discoverYear, discoverGenres, fetchTrandingMovie } from './fetchApi'
+import { fetchMovie, discoverYear, discoverGenres, fetchTrandingMovie } from './fetchApi'
 
 import { options } from './fetchApi';
 
@@ -167,45 +167,16 @@ async function onClickNumberPageBtn(e) {
   console.log(e.target.dataset.page)
   console.dir(refs.pages)
   options.pageNumber = +e.target.dataset.page
+  options.pageNumberTest = options.pageNumber
   console.log(refs.pages)
   console.log(refs.pages.firstElementChild)
-
-  let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-  }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-  }  
 
   if (currentFetch === 'error') {
     console.log('eror my eror')
     return 
   }
-  options.pageNumberTest = options.pageNumber
-  localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-  galleryArrayMarkup(response)
-  markupPages(response)
-  modalOpenOnClick()
-  ratingAddIshidden()
-  hideFirstPageBtn()
-  hideLastPageBtn()
-  togglePaginationBtn()
-  scrollUp(e)
-  markupStartEndPages(response)
-  
-  console.log(e.target)
-  
+
+  onClickCurrentButtonDoIt()
   
 }
 
@@ -213,89 +184,28 @@ async function onClickPrevPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log('prev')
-  console.log(e.target)
-  refs.nextPage.parentNode.classList.remove('disabled')
+
+  // refs.nextPage.parentNode.classList.remove('disabled')
   
   if (options.pageNumber > 1) {
     options.pageNumber -= 1;
-    
-    let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-  }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-    }  
     options.pageNumberTest = options.pageNumber
-    localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-    galleryArrayMarkup(response)
-    markupPages(response)
-    modalOpenOnClick()
-    ratingAddIshidden()
-    hideFirstPageBtn()
-    hideLastPageBtn()
-    togglePaginationBtn()  
-    scrollUp(e)
     
-    markupStartEndPages(response)
+    onClickCurrentButtonDoIt()
 
   }
 }
 async function onClickNextPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
-  e.preventDefault();
-  console.log('next')
-  console.log(e.target)
-  console.log(e.currentTarget)
-  console.log(options.maxPage,'maxPage')
-  console.log(options.pageNumber,'pageNumber')
-  
+  e.preventDefault();  
   
     if (options.pageNumber < options.maxPage) {
       refs.prevPage.parentNode.classList.remove('disabled')
-      options.pageNumber += 1;     
-let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-      }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-      }
+      options.pageNumber += 1;  
       options.pageNumberTest = options.pageNumber
-      localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-      galleryArrayMarkup(response)
-      markupPages(response)
-      modalOpenOnClick()
-      ratingAddIshidden()
-      console.dir(refs.pages.lastElementChild.firstElementChild.dataset.page,'dataset')
-      hideFirstPageBtn()
-      hideLastPageBtn()
-      togglePaginationBtn()
-      scrollUp(e)
-     
-      markupStartEndPages(response)
+      
+      onClickCurrentButtonDoIt()
 
     }
 }
@@ -306,10 +216,7 @@ async function onClickMorePageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log('more')
-  console.log(e.target)
-  console.log(options.pageNumber)
-  console.log(options.maxPage)
+
   if (options.pageNumber <= options.maxPage) {
     if (options.pageNumber+3 >= options.maxPage) {
       options.pageNumber = options.maxPage
@@ -317,35 +224,8 @@ async function onClickMorePageBtn(e) {
       options.pageNumber += 3;
       options.pageNumberTest = options.pageNumber
     }
-let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-  }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-    }
-    
-    localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-    galleryArrayMarkup(response)
-    markupPages(response)
-    modalOpenOnClick()
-    ratingAddIshidden()
-    hideFirstPageBtn()
-    hideLastPageBtn()
-    togglePaginationBtn()
-    scrollUp(e)
-    
-    markupStartEndPages(response)
+
+    onClickCurrentButtonDoIt()
 
   }
 }
@@ -354,8 +234,7 @@ async function onClickLessPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log('less')
-  console.log(e.target)
+
   if (options.pageNumber <= options.maxPage) {
     if (options.pageNumber <= 3) {
       options.pageNumber = 1
@@ -364,35 +243,8 @@ async function onClickLessPageBtn(e) {
       options.pageNumber -= 3;
       options.pageNumberTest = options.pageNumber
     }
-let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-  }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-    }
-    
-    localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-    galleryArrayMarkup(response)
-    markupPages(response)
-    modalOpenOnClick()
-    ratingAddIshidden()
-    hideFirstPageBtn()
-    hideLastPageBtn()
-    togglePaginationBtn()
-    scrollUp(e)
-    
-    markupStartEndPages(response)
+
+    onClickCurrentButtonDoIt()
 
   }
 }
@@ -407,41 +259,11 @@ async function onClickStartPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log('more')
-  console.log(e.target)
-  console.log(options.pageNumber)
-  console.log(options.maxPage)
+
   options.pageNumber = 1
   options.pageNumberTest = options.pageNumber
-  let response
-  if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
-  }
-  if (currentFetch === 'search') {
-    response = await fetchPhoto()
-    console.log('search',response)
-  }
-  if (currentFetch === 'genres') {
-    response = await discoverGenres()
-    console.log('genres',response)
-  }
-  if (currentFetch === 'year') {
-    response = await discoverYear()
-    console.log('genres',response)
-    }
-    
-    localStorage.setItem('MoviesOnPage', JSON.stringify(response));
-    galleryArrayMarkup(response)
-    markupPages(response)
-    modalOpenOnClick()
-    ratingAddIshidden()
-    hideFirstPageBtn()
-    hideLastPageBtn()
-    togglePaginationBtn()
-    scrollUp(e)
-    
-    markupStartEndPages(response)
+
+  onClickCurrentButtonDoIt()
 
 }
   
@@ -450,19 +272,21 @@ async function onClickEndPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log('more')
-  console.log(e.target)
-  console.log(options.pageNumber)
-  console.log(options.maxPage)
+
   options.pageNumber = options.maxPage
   options.pageNumberTest = options.pageNumber
+
+  onClickCurrentButtonDoIt()
+}
+
+async function onClickCurrentButtonDoIt() {
   let response
   if (currentFetch === 'tranding') {
     response = await fetchTrandingMovie()
     console.log('tranding',response)
   }
   if (currentFetch === 'search') {
-    response = await fetchPhoto()
+    response = await fetchMovie()
     console.log('search',response)
   }
   if (currentFetch === 'genres') {
@@ -485,7 +309,6 @@ async function onClickEndPageBtn(e) {
     scrollUp(e)
     
     markupStartEndPages(response)
-
 }
 
 function markupStartEndPages(array) {

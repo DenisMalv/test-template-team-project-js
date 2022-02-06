@@ -1,17 +1,11 @@
-import { fetchPhoto, fetchGenres, discoverGenres, fetchTrandingMovie,fetchTrandingMovieForSlider,fetchPhotoTest } from './fetchApi';
+import { fetchMovie, discoverGenres, fetchTrandingMovie,fetchMoviesTestValidator } from './fetchApi';
 
 import {
   markupPages,
   togglePainationAllButtons,
   addTestPaginationListeners,
-  togglePaginationBtn,
   hideFirstPageBtn,
   hideLastPageBtn,
-  onClickNumberPageBtn,
-  onClickPrevPageBtn,
-  onClickNextPageBtn,
-  onClickLessPageBtn,
-  onClickMorePageBtn,
 } from './pagination';
 
 import {
@@ -73,8 +67,7 @@ const refs = {
   slider: document.querySelector('.slider__section'),
 };
 let currentFetch = 'tranding';
-let currentFetchTest = 'tranding';
-// let previousFetch = JSON.parse(localStorage.getItem('MoviesOnPage'));
+let currentFetchTestValidator = 'tranding';
 
 genresMarkup();
 
@@ -128,6 +121,7 @@ async function checkFetchLink(e) {
     // ==== chech input ====
     await showFetchLoader()
     if (e.currentTarget === refs.form) {
+      
       if (formInput.value.trim() === '') {
         console.log('options.pageNumber',options.pageNumber);
         console.log('options.pageNumberTest',options.pageNumberTest);
@@ -138,6 +132,11 @@ async function checkFetchLink(e) {
         showErrorText();
         console.log(('пусто'));
         setTimeout(hideErrorText, 2000)
+
+        if (currentFetch === 'search') {
+        options.query = JSON.parse(localStorage.getItem('completeSearchValue'))
+        ress= await fetchMovie()
+        }
         if (currentFetch === 'genres') {
         ress= await discoverGenres()
         }
@@ -150,8 +149,9 @@ async function checkFetchLink(e) {
         
       } else {
        
-        options.queryTest = formInput.value;
+        options.queryTestValidator = formInput.value;
         options.pageNumber = 1
+        // options.pageNumberTest = 1
       
       await onClickSearchSubmit(e);
       // togglePainationAllButtons(ress);
@@ -194,7 +194,7 @@ async function checkFetchLink(e) {
     ratingAddIshidden();
     hideFirstPageBtn();
     hideLastPageBtn();
-    togglePaginationBtn();
+    // togglePaginationBtn();
     togglePainationAllButtons(ress);
     modalOpenOnClick();
     await hideFetchLoader()
@@ -209,7 +209,7 @@ async function onClickSearchSubmit(e) {
 
   hideErrorText();
   //проверка отправка респонса с тестовым значением инпута
-  const ressTest = await fetchPhotoTest();
+  const ressTest = await fetchMoviesTestValidator();
   // console.log('resstest,', ressTest);
   
   //проверка респонса на длинну массива
@@ -218,17 +218,18 @@ async function onClickSearchSubmit(e) {
       console.log(('пусто'));
       setTimeout(hideErrorText, 2000)
       options.pageNumber = options.pageNumberTest
-      currentFetchTest = 'search';
+      currentFetchTestValidator = 'search';
       console.log('restest = 0')
       formInput.value = ''
       console.log('options.query',options.query)
-      console.log('options.queryTest',options.queryTest)
+      console.log('options.queryTestValidator', options.queryTestValidator)
+      
       // options.query === ''
       // console.log(options.query === '')
     //проверка респонса на длинну массива с пустым инпутом
       if (options.query === '') {
         console.log('query pysto aaaaaa')
-        console.log('currentFetchTest',currentFetchTest)
+        console.log('currentFetchTestValidator',currentFetchTestValidator)
         console.log('currentFetch', currentFetch)
         if (currentFetch === 'genres') {
           ress= await discoverGenres()
@@ -242,9 +243,9 @@ async function onClickSearchSubmit(e) {
       
       } else {
         if (currentFetch === 'search') {
-          ress = await fetchPhoto()
+          ress = await fetchMovie()
         }
-        // ress = await fetchPhoto()
+        // ress = await fetchMovie()
         if (currentFetch === 'genres') {
           ress= await discoverGenres()
         }
@@ -254,23 +255,25 @@ async function onClickSearchSubmit(e) {
         if (currentFetch === 'year') {
           ress= await discoverYear()
         }
-        // options.queryTest = ''
+        
       }
      
     
   } else {
-    // если все ок то записываем значение queryTest в query 
+    // если все ок то записываем значение queryTestValidator в query 
     console.log('currentFetchДо',currentFetch);
-    console.log('currentFetchTestДо',currentFetchTest);
-    
+    console.log('currentFetchTestValidator',currentFetchTestValidator);
+      
+      formInput.value = ''
       currentFetch = 'search'
       options.genresId = []
-      options.query = options.queryTest
-      removeAllChekedGenres();
-    ress = await fetchPhoto()
+      options.query = options.queryTestValidator
+    removeAllChekedGenres();
+    localStorage.setItem('completeSearchValue',JSON.stringify(options.query))
+    ress = await fetchMovie()
     console.log(options.genresId);
     console.log('currentFetchПосле',currentFetch);
-    console.log('currentFetchTestПосле',currentFetchTest);
+    console.log('currentFetchTestValidator',currentFetchTestValidator);
       
   }
   
@@ -332,7 +335,7 @@ async function onLoadTranding() {
   modalOpenOnClick();
   hideFirstPageBtn();
   hideLastPageBtn();
-  togglePaginationBtn();
+  // togglePaginationBtn();
   removeAllChekedGenres();
   togglePainationAllButtons(ress);
   
