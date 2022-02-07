@@ -1,4 +1,5 @@
- import './js/components/errorText';
+import './sass/main.scss';
+import './js/components/errorText';
 import './js/components/fetchLoader';
 import './js/components/fn_addLSPageKey';
 import './js/components/fn_dataMovieAddToLS';
