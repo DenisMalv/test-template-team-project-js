@@ -83,7 +83,7 @@ async function addTestPaginationListeners() {
 }
 
 function togglePaginationBtn() {
-
+  console.log(('options.pageNumber',options.pageNumber));
     refs.prevPage.parentNode.classList.remove('btn_disabled')
     refs.prevPage.parentNode.classList.remove('visually-hidden')
     refs.lessPage.parentNode.classList.remove('btn_disabled')
@@ -276,10 +276,10 @@ async function onClickEndPageBtn(e) {
   options.pageNumber = options.maxPage
   options.pageNumberTest = options.pageNumber
 
-  onClickCurrentButtonDoIt()
+  onClickCurrentButtonDoIt(event)
 }
 
-async function onClickCurrentButtonDoIt() {
+async function onClickCurrentButtonDoIt(e) {
   let response
   if (currentFetch === 'tranding') {
     response = await fetchTrandingMovie()
@@ -301,12 +301,12 @@ async function onClickCurrentButtonDoIt() {
     localStorage.setItem('MoviesOnPage', JSON.stringify(response));
     galleryArrayMarkup(response)
     markupPages(response)
-    modalOpenOnClick()
+    // modalOpenOnClick()
     ratingAddIshidden()
     hideFirstPageBtn()
     hideLastPageBtn()
     togglePaginationBtn()
-    scrollUp(e)
+    scrollUp(event)
     
     markupStartEndPages(response)
 }

@@ -1,9 +1,9 @@
 export { modalWindowMarkup };
 
-import { galleryGenresMarkup, modalGenresMarkup } from './genres';
-import { posterFolder } from './gallery';
-import { wText } from './fn_searchGalleryTargetInLS';
+import {modalGenresMarkup } from './genres';
+
 import folder from '../../images/placeholder.bmp'
+import { addListenerOnGalleryCardButtons} from './modal'
 
 const refs = {
   gallery: document.querySelector('.gallery-list'),
@@ -64,5 +64,7 @@ function modalWindowMarkup({
             </div>
         </div>`;
   refs.modal.innerHTML = '';
-  refs.modal.insertAdjacentHTML('beforeend', markupFilm);
+    refs.modal.insertAdjacentHTML('beforeend', markupFilm);
+    
+    addListenerOnGalleryCardButtons()
 }

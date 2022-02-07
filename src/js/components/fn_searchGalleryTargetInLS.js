@@ -41,6 +41,7 @@ function getGalleryTargetMovieFromLS() {
           // console.log('era', film)
           teaser(film.id);
           modalWindowMarkup(film);
+          
         }
       }
     });
