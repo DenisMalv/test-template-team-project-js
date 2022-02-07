@@ -1,13 +1,13 @@
 export { modalWindowMarkup };
 
-import { modalGenresMarkup } from './genres';
-
+import { galleryGenresMarkup, modalGenresMarkup } from './genres';
+import { posterFolder } from './gallery';
+import { wText } from './fn_searchGalleryTargetInLS';
 import folder from '../../images/placeholder.bmp'
-import {addListenerOnGalleryCardButtons} from './modal'
 
 const refs = {
   gallery: document.querySelector('.gallery-list'),
-    modal: document.querySelector('.modal__wrapper'),
+  modal: document.querySelector('.modal__wrapper'),
 };
 
 function modalWindowMarkup({
@@ -64,7 +64,5 @@ function modalWindowMarkup({
             </div>
         </div>`;
   refs.modal.innerHTML = '';
-    refs.modal.insertAdjacentHTML('beforeend', markupFilm);
-    addListenerOnGalleryCardButtons()
+  refs.modal.insertAdjacentHTML('beforeend', markupFilm);
 }
-

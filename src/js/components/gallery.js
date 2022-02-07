@@ -17,7 +17,7 @@ import {
   toggleTrands,
 } from './genres';
 
-import { modalOpenOnClick, onClickMovieCard } from './modal';
+import { modalOpenOnClick } from './modal';
 
 import { options } from './fetchApi';
 import galleryTpl from '../../template/gallery.hbs';
@@ -65,10 +65,7 @@ const refs = {
   textError: document.querySelector('.js-header__text-error'),
   endCollectionText: document.querySelector('.end-collection-text'),
   slider: document.querySelector('.slider__section'),
-  modalButtonWatched: document.querySelector('.js-button-add-watched'),
-  modalButtonQueue:document.querySelector('.js-button-add-queue')
 };
-
 let currentFetch = 'tranding';
 let currentFetchTestValidator = 'tranding';
 
@@ -199,8 +196,7 @@ async function checkFetchLink(e) {
     hideLastPageBtn();
     // togglePaginationBtn();
     togglePainationAllButtons(ress);
-    // onClickMovieCard()
-    // modalOpenOnClick();
+    modalOpenOnClick();
     await hideFetchLoader()
     
   } catch (e) {
@@ -330,15 +326,13 @@ async function onClickTopWeekTrands(e) {
 }
 // ================== tranding Startpage ==================
 async function onLoadTranding() {
-  
   showFetchLoader()
   ress = await fetchTrandingMovie();
   options.maxPage = ress.total_pages;
   galleryArrayMarkup(ress);
   markupPages(ress);
   ratingAddIshidden();
-  // onClickMovieCard()
-  // modalOpenOnClick();
+  modalOpenOnClick();
   hideFirstPageBtn();
   hideLastPageBtn();
   // togglePaginationBtn();
@@ -386,21 +380,16 @@ function galleryArrayMarkup(array) {
     })
     .join('');
   refs.gallery.insertAdjacentHTML('beforeend', galleryMarkup);
-
-
-  //===================================== НОВИНКА !!!!!!!!!!!!!!!! ======================
-  addListenerOnGalleryCard()
-  //====================================================================================
 }
-
-
-
 console.log('genresId', options.genresId);
 
-
+console.log('genresId', options.genresId);
+{/* <img src="https://image.tmdb.org/t/p/w500${poster_path}" alt="${original_title}" width = "396" onError="this.src='../../images/folder.jpg'/> */}
 function posterFolder(poster) {
   if (poster === null) {
     return `https://via.placeholder.com/550`
+    // return `https://via.placeholder.com/550`
+    // return `https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg`
   }
   return `https://image.tmdb.org/t/p/w500${poster}`
 }
@@ -413,10 +402,3 @@ function ratingAddIshidden() {
 
 const ratings = document.querySelector('.gallery-list');
 console.log(ratings);
-
-
-function addListenerOnGalleryCard() {
-  const clickedMovieCard = document.querySelectorAll('.gallery-list__item')
-  clickedMovieCard.forEach(movie => movie.addEventListener("click", onClickMovieCard));
-    console.log('clickedMovieCard', clickedMovieCard);
-}
