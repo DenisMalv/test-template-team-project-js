@@ -39,7 +39,7 @@ function homeMarkup() {
     hideLastPageBtn();
     togglePaginationBtn();
     togglePainationAllButtons(ress);
-    modalOpenOnClick()
+    // modalOpenOnClick()
     localStorage.setItem('isActive', 'home');
 
   } catch (e) {
