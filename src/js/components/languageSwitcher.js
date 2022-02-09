@@ -76,7 +76,7 @@ async function onClickSwitchLanguage(event) {
         if (currentFetch === 'year') {
         ress= await discoverYear()
         }
-        
+        localStorage.setItem('MoviesOnPage', JSON.stringify(ress));
     galleryArrayMarkup(ress);
     markupPages(ress);
     ratingAddIshidden();

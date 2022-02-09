@@ -12,7 +12,7 @@ export const options = {
   yearId: [],
   maxPage: 0,
   trand: 'day',
-  language:'ru',
+  language:'en',
   // listofFilmforSlider:[]
 };
 
