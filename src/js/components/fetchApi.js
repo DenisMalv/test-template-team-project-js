@@ -66,7 +66,7 @@ async function fetchTrandingMovieForSlider() {
     if (JSON.parse(localStorage.getItem('listofFilmforSlider'))) {
       return
     }
-    localStorage.setItem('listofFilmforSlider', JSON.stringify([]))
+    localStorage.setItem('listofFilmforSlider', JSON.stringify({ page:1, results:[],total_pages:0}))
     
     for (let pageNum = 0; pageNum <= 5, pageNum += 1;) {
       if (options.pageNumberSlider >= 5) {
@@ -77,12 +77,13 @@ async function fetchTrandingMovieForSlider() {
       const { data } = await axios.get(
         `https://api.themoviedb.org/3/trending/movie/${options.trand}?api_key=6dae1a863e182d2e5c972909bcd1e575&&page=${options.pageNumberSlider}`,
       );
-      listofFilmforSliderInLS = [...listofFilmforSliderInLS, ...data.results]
+      listofFilmforSliderInLS = {page:options.pageNumber, results:[...listofFilmforSliderInLS.results, ...data.results], total_pages:data.total_pages}
       localStorage.setItem('listofFilmforSlider', JSON.stringify(listofFilmforSliderInLS))
       options.pageNumberSlider += 1
       
       console.log('listofFilmforSliderInLS', listofFilmforSliderInLS);
       console.log('pageNum',pageNum)
+      console.log('options.pageNumberSlider',options.pageNumberSlider)
       console.log('options.pageNumber',options.pageNumber)
        
     }
@@ -91,6 +92,8 @@ async function fetchTrandingMovieForSlider() {
     console.log(error);
   }
 }
+
+
 
 
 // ===================old discover year =================

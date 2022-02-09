@@ -1,5 +1,6 @@
 export { onLoadMainPageShowSlider };
 import { options, fetchTrandingMovieForSlider } from './fetchApi';
+// import {fetchTrandingMovieorReadLS} from './pagination'
 import { galleryGenresMarkup, modalGenresMarkup } from './genres';
 import folder from '../../images/placeholder.bmp';
 import teaser from './teaser';
@@ -29,13 +30,13 @@ async function sliderMarkup() {
   let indexOfallUl = 0;
   sliderList.innerHTML = '';
 
-  const sliderMarkup = listofFilmforSliderGet.map(({ poster_path, vote_average, id }) => {
+  const sliderMarkup = listofFilmforSliderGet.results.map(({ poster_path, vote_average, id, original_title }) => {
       if (vote_average > 8) {
         indexOfallUl += 1;
         return `<li class="glide__slide" style="width: 136px; margin-left: 10px; margin-right: 10px;" data-idx="${id}">
         <img class='slider-image' src="${
           poster_path ? 'https://image.tmdb.org/t/p/w500' + poster_path : folder
-        }"/>
+        }" alt="${original_title}"/>
       </li>`;
       }
     })
@@ -60,11 +61,13 @@ async function onLoadMainPageShowSlider() {
   if (window.innerWidth < 768) {
     return;
   }
+  // await fetchTrandingMovieorReadLS()
   await fetchTrandingMovieForSlider();
   console.log('options.pageNumber', refs.listofFilmforSlider);
   console.log('options.listofFilmforSlider', refs.listofFilmforSlider);
   await sliderMarkup();
-  onClickSlide();
+  await onClickSlide();
+  
 }
 
 function onClickSlide() {
@@ -74,7 +77,7 @@ function onClickSlide() {
   console.dir(listOfSlides);
   listOfSlides.forEach(slide =>
     slide.addEventListener('click', async () => {
-      const sliderFilm = listofFilmforSliderGet.find(
+      const sliderFilm = listofFilmforSliderGet.results.find(
         trandingFilm => trandingFilm.id == slide.dataset.idx,
       );
       console.log(sliderFilm);

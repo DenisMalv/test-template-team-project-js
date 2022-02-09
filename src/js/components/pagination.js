@@ -1,10 +1,10 @@
-export { markupPages, togglePainationAllButtons, addTestPaginationListeners, togglePaginationBtn, hideFirstPageBtn, hideLastPageBtn, onClickPrevPageBtn, onClickNextPageBtn, onClickNumberPageBtn, onClickLessPageBtn, onClickMorePageBtn, }
+export { markupPages, togglePainationAllButtons, addTestPaginationListeners, togglePaginationBtn, hideFirstPageBtn, hideLastPageBtn, onClickPrevPageBtn, onClickNextPageBtn, onClickNumberPageBtn, onClickLessPageBtn, onClickMorePageBtn, fetchTrandingMovieorReadLS, }
 
 import {modalOpenOnClick,addListenersOnEachGalleryCard} from './modal'
 
 import { currentFetch, ress, checkFetchLink, onLoadTranding, galleryArrayMarkup, genresMarkup, toggleGenres, removeAllChekedGenres, ratingAddIshidden } from './gallery'
 
-import { fetchMovie, discoverYear, discoverGenres, fetchTrandingMovie } from './fetchApi'
+import { fetchMovie, discoverYear, discoverGenres, fetchTrandingMovie,fetchTrandingMovieForSlider } from './fetchApi'
 
 import { options } from './fetchApi';
 
@@ -31,7 +31,7 @@ console.log(refs);
 console.log(options);
 // console.log(refs.endCollectionText);
 function markupPages(array) {
-  let pagesBtnMarkup =`     <div class="page_item">
+  let pagesBtnMarkup =`     <div class="page_item ${(array.page - 2 <= 0) ?'visually-hidden':'' }">
         <a href="#" class="page_link pagination_btn" data-page=${array.page - 2}>${array.page - 2}</a>
       </div>
       <div class="page_item ${(array.page - 1 <= 0) ?'visually-hidden':'' }">
@@ -49,10 +49,10 @@ function markupPages(array) {
   
   if(window.innerWidth >767) {
     pagesBtnMarkup = `
-      <li class="page_item"><a href="#" class="page_link pagination_btn" data-page=${array.page - 1}>${array.page - 1}</a></li>
-              <li class="page_item disabled"><a href="#" class="page_link pagination_btn btn_active btn_disabled" data-page=${array.page}>${array.page}</a></li>
-              <li class="page_item"><a href="#" class="page_link pagination_btn" data-page=${array.page + 1}>${array.page + 1}</a>
-              </li>`
+      <div class="page_item ${array.page - 1<=0? 'visually-hidden':''}"><a href="#" class="page_link pagination_btn" data-page=${array.page - 1}>${array.page - 1}</a></div>
+              <div class="page_item btn_disabled"><a href="#" class="page_link pagination_btn btn_active btn_disabled" data-page=${array.page}>${array.page}</a></div>
+              <div class="page_item ${array.page + 1 >options.maxPage? 'visually-hidden':''}"><a href="#" class="page_link pagination_btn" data-page=${array.page + 1}>${array.page + 1}</a>
+              </div>`
   
     markupStartEndPages(array)
     refs.pages.insertAdjacentHTML('beforeend', pagesBtnMarkup)
@@ -128,9 +128,9 @@ function togglePaginationBtn() {
 
 
 function hideFirstPageBtn() {
-  if (refs.pages.firstElementChild.firstElementChild.dataset.page <= 1) {
-    refs.pages.firstElementChild.classList.add('visually-hidden');
-  }
+  // if (refs.pages.firstElementChild.firstElementChild.dataset.page <= 0) {
+  //   refs.pages.firstElementChild.classList.add('visually-hidden');
+  // }
   // refs.paginationList.children[0].classList.add('visually-hidden')
   // refs.paginationList.children[1].classList.add('visually-hidden')
   // refs.paginationList.children[2].classList.add('visually-hidden')
@@ -138,14 +138,14 @@ function hideFirstPageBtn() {
 }
 
 function hideLastPageBtn() {
-  if (refs.pages.lastElementChild.firstElementChild.dataset.page-1 >= options.maxPage) {
-    refs.pages.lastElementChild.classList.add('visually-hidden');
+  // if (refs.pages.lastElementChild.firstElementChild.dataset.page-1 >= options.maxPage) {
+  //   refs.pages.lastElementChild.classList.add('visually-hidden');
     // refs.paginationList.children[4].classList.add('visually-hidden')
     // refs.paginationList.children[5].classList.add('visually-hidden')
     // refs.paginationList.children[6].classList.add('visually-hidden')  
     // ===================================== скрываю текст конец коллекции
       // refs.endCollectionText.classList.remove('visually-hidden');
-  }
+  // }
 }
 // function hideEndCollectionText (){
 //   refs.endCollectionText.classList.add('is-hidden');
@@ -157,16 +157,16 @@ function hideLastPageBtn() {
 // ============ descriptionButtonListener ============
 async function onClickNumberPageBtn(e) {
 
-  if (e.target.nodeName === 'UL' || e.target.nodeName === 'LI') {
+  if (e.target.nodeName === 'LI' || e.target.nodeName === 'DIV' || e.target.nodeName === 'UL') {
     return
   }
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-  console.log(e.target)
+  console.dir(e.target)
   console.log(e.target.dataset.page)
   console.dir(refs.pages)
-  options.pageNumber = +e.target.dataset.page
+  options.pageNumber = +e.target.dataset.page>=1?+e.target.dataset.page:1
   options.pageNumberTest = options.pageNumber
   console.log(refs.pages)
   console.log(refs.pages.firstElementChild)
@@ -272,18 +272,20 @@ async function onClickEndPageBtn(e) {
   refs.gallery.innerHTML = ''
   refs.pages.innerHTML = ''
   e.preventDefault();
-
+  console.log('options.maxPage',options.maxPage);
   options.pageNumber = options.maxPage
   options.pageNumberTest = options.pageNumber
 
   onClickCurrentButtonDoIt(event)
 }
 
+
+
 async function onClickCurrentButtonDoIt(e) {
   let response
   if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovie()
-    console.log('tranding',response)
+    response = await fetchTrandingMovieorReadLS()
+    
   }
   if (currentFetch === 'search') {
     response = await fetchMovie()
@@ -297,7 +299,7 @@ async function onClickCurrentButtonDoIt(e) {
     response = await discoverYear()
     console.log('genres',response)
     }
-    
+    console.log('response-bf',response);
     localStorage.setItem('MoviesOnPage', JSON.stringify(response));
     galleryArrayMarkup(response)
     markupPages(response)
@@ -314,4 +316,74 @@ async function onClickCurrentButtonDoIt(e) {
 function markupStartEndPages(array) {
   refs.startPage.textContent=1
   refs.endPage.textContent=array.total_pages
+}
+
+
+async function fetchTrandingMovieorReadLS() {
+  let response
+  const arrayOfFourPage = JSON.parse(localStorage.getItem('listofFilmforSlider'))
+
+  console.log('arrayOfFourPage', arrayOfFourPage);
+  
+  if (options.pageNumber >= 5) {
+    return response = await fetchTrandingMovie()
+    console.log('tranding', response)
+    }
+  if (options.pageNumber === 1) {
+    if (!arrayOfFourPage) {
+        return response = await fetchTrandingMovie()
+      }
+      return  response = { 
+          page: 1,
+          results: arrayOfFourPage.results.filter((movie, idx) => {
+          if (idx < 20) {
+            console.log('movie', movie);
+            return movie
+          }
+          }),
+          total_pages:arrayOfFourPage.total_pages
+      }
+      console.log('response-1', response);
+      
+    }
+    if (options.pageNumber === 2) {
+      return  response = {
+        page: 2,
+        results: arrayOfFourPage.results.filter((movie, idx) => {
+          if (idx > 19 && idx < 40) {
+            console.log('movie', movie);
+            return movie
+          }
+        }),
+          total_pages:arrayOfFourPage.total_pages
+      }
+      console.log('response-2',response);
+    }
+    if (options.pageNumber === 3) {
+      return  response = {
+        page: 3,
+        results: arrayOfFourPage.results.filter((movie, idx) => {
+          if (idx > 39 && idx < 60) {
+            console.log('movie', movie);
+            return movie
+          }
+        }),
+          total_pages:arrayOfFourPage.total_pages
+      }
+      console.log('response-3',response);
+    }
+    if (options.pageNumber === 4) {
+      return  response = {
+        page: 4,
+        results: arrayOfFourPage.results.filter((movie, idx) => {
+          if (idx > 59 && idx < 80) {
+            console.log('movie', movie);
+            return movie
+          }
+        }),
+          total_pages:arrayOfFourPage.total_pages
+      }
+      console.log('response-4',response);
+    }
+  
 }

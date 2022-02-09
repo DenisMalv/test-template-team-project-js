@@ -31,7 +31,7 @@
         autocomplete="off"
         placeholder="Поиск фильмов"
       />
-      <button class="header__button--search" type="submit">
+      <button class="header__button--search" type="submit" name="search-button">
         <svg class="header__icon" width="12" height="12">
           <use href="./images/sprite.svg#icon-search"></use>
         </svg>
@@ -43,16 +43,16 @@
     </p>
 
     <div class="header__buttons--thumb js-header-thumb">
-      <button type="submit" class="header__button header__button--active js-button-watched">
+      <button name="button-watched" type="submit" class="header__button header__button--active js-button-watched">
         Watched
       </button>
-      <button type="submit" class="header__button js-button-queue">Queue</button>
+      <button name="button-queue" type="submit" class="header__button js-button-queue">Queue</button>
     </div>
 
     <div class="toolbar">
       <!-- Разметка кнопки фильтр -->
       <div class="filter">
-        <button type="button" class="filter_button button-active">Filter</button>
+        <button type="button" class="filter_button button-active" name="button-filter">Filter</button>
       </div>
       <!-- Разметка переключателя темы -->
       <div class="theme-switch">

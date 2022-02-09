@@ -12,20 +12,22 @@ const refs = {
 };
 
 async function genresMarkup() {
-
+const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))
   const r = await fetchGenres()
   
   const genres = r.genres.map(({ id, name }) => {
     options.allGenresList.push({ id, name })
-    return `<button class="genres-btn btn"  id="${id}">${name}</button>`}).join("")
+    localStorage.setItem('allGenresList', JSON.stringify([...options.allGenresList]))
+    return `<button class="genres-btn btn"  id="${id} name="${name}"">${name}</button>`}).join("")
   refs.genres.insertAdjacentHTML('afterbegin', genres)
-
+    
 }
 // ========================= отрисовка имен жанров в галерее =================
 function galleryGenresMarkup(array) {
-//   console.log(array)
+  const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))
+  // console.log(array)
   let ress = array.map(elem => {
-    for (const el of options.allGenresList) {
+    for (const el of AllGenresInLS) {
       if (elem === el.id) {
         // console.log('name ', el.name)
         return el.name
@@ -41,9 +43,10 @@ function galleryGenresMarkup(array) {
 }
 //======================= жанры на модалке ===================================
 function modalGenresMarkup(array) {
+  const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))
 //   console.log(array)
   let ress = array.map(elem => {
-    for (const el of options.allGenresList) {
+    for (const el of AllGenresInLS) {
       if (elem === el.id) {
         // console.log('name ', el.name)
         return el.name

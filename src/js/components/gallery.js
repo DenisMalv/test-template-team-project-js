@@ -1,4 +1,4 @@
-import { fetchMovie, discoverGenres, fetchTrandingMovie,fetchMoviesTestValidator } from './fetchApi';
+import { fetchMovie, discoverGenres, fetchTrandingMovie,fetchMoviesTestValidator,fetchTrandingMovieForSlider } from './fetchApi';
 
 import {
   markupPages,
@@ -6,7 +6,8 @@ import {
   addTestPaginationListeners,
   hideFirstPageBtn,
   hideLastPageBtn,
-  togglePaginationBtn
+  togglePaginationBtn,
+  fetchTrandingMovieorReadLS
 } from './pagination';
 
 import {
@@ -73,8 +74,14 @@ const refs = {
 let currentFetch = 'tranding';
 let currentFetchTestValidator = 'tranding';
 
-genresMarkup();
 
+// genresMarkup();
+
+start()
+async function start() {
+  await genresMarkup();
+  await fetchTrandingMovieForSlider()
+}
 
 const formInput = refs.form.elements.query;
 
@@ -102,9 +109,9 @@ if (!localStorage.getItem('queue')) {
 
 
 onLoadTranding();
-
+// onLoadMainPageShowSlider()
 addTestPaginationListeners();
-onLoadMainPageShowSlider()
+
 
 
 
@@ -333,7 +340,8 @@ async function onClickTopWeekTrands(e) {
 // ================== tranding Startpage ==================
 async function onLoadTranding() {
   showFetchLoader()
-  ress = await fetchTrandingMovie();
+  ress = await fetchTrandingMovieorReadLS()
+  // ress = await fetchTrandingMovie();
   options.maxPage = ress.total_pages;
   galleryArrayMarkup(ress);
   markupPages(ress);
@@ -352,20 +360,27 @@ async function onLoadTranding() {
 
   // options.pageNumber += 1;
   console.log(options.allGenresList);
+  
   await hideFetchLoader()
-  return await fetchTrandingMovie();
+  
+  setTimeout(onLoadMainPageShowSlider,3000)
+
+
+  return ress
 }
 
 //=========================== разметкa Галереи фильмов ====================
 function galleryArrayMarkup(array) {
+  console.log(array);
   const galleryMarkup = array.results
     .map(({ poster_path, original_title, vote_average, release_date, genre_ids }) => {
+      console.log('genre_ids',genre_ids);
       return `<li class="gallery-list__item">
 
 
                 <a class="gallery-list__card">
                     <div class="gallery-list__poster">
-                        <img class="gallery-list__img" src="${poster_path?'https://image.tmdb.org/t/p/w500'+poster_path:folder}" alt="${original_title}"  loading="lazy" />
+                        <img class="gallery-list__img" src="${poster_path?'https://image.tmdb.org/t/p/w400'+poster_path:folder}" alt="${original_title}"  loading="lazy" />
                     </div>
                     </div>
                     <div class="gallery-list__description">

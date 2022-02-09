@@ -57,8 +57,8 @@ function modalWindowMarkup({
                 </div>
 
                 <div class="modal__buttons">
-                    <button type="submit" class="modal__button watched js-button-add-watched"><span class="add-button-watched-text"></span></button>
-                    <button type="submit" class="modal__button queue js-button-add-queue"><span
+                    <button name="button-watched" type="submit" class="modal__button watched js-button-add-watched"><span class="add-button-watched-text"></span></button>
+                    <button name="button-queue" type="submit" class="modal__button queue js-button-add-queue"><span
                             class="add-button-queue-text"></span></button>
                 </div>
             </div>
