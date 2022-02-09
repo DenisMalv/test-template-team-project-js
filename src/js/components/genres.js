@@ -10,18 +10,20 @@ const refs = {
   genres: document.querySelector('.genres'),
   topTrands: document.querySelector('.top-trands'),
 };
-
+// const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))
 async function genresMarkup() {
-const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))
+  refs.genres.innerHTML =''
+  options.allGenresList=[]
   const r = await fetchGenres()
   
   const genres = r.genres.map(({ id, name }) => {
     options.allGenresList.push({ id, name })
     localStorage.setItem('allGenresList', JSON.stringify([...options.allGenresList]))
-    return `<button class="genres-btn btn"  id="${id} name="${name}"">${name}</button>`}).join("")
+    return `<button class="genres-btn btn"  id="${id}" name="${name}">${name}</button>`}).join("")
   refs.genres.insertAdjacentHTML('afterbegin', genres)
     
 }
+
 // ========================= отрисовка имен жанров в галерее =================
 function galleryGenresMarkup(array) {
   const AllGenresInLS = JSON.parse(localStorage.getItem('allGenresList'))

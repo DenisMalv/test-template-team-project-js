@@ -31,7 +31,8 @@ import { hidePagination, showPagination } from './hidePagination';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { sliderMarkup,onLoadMainPageShowSlider} from './slider';
-import {showFetchLoader,hideFetchLoader} from './fetchLoader'
+import { showFetchLoader, hideFetchLoader } from './fetchLoader'
+import {addEventListenerOnLanguageButtons} from './languageSwitcher'
 import folder from '../../images/placeholder.bmp'
 
 
@@ -74,14 +75,14 @@ const refs = {
 let currentFetch = 'tranding';
 let currentFetchTestValidator = 'tranding';
 
-
-// genresMarkup();
-
-start()
-async function start() {
-  await genresMarkup();
-  await fetchTrandingMovieForSlider()
-}
+addEventListenerOnLanguageButtons()
+genresMarkup();
+fetchTrandingMovieForSlider()
+// start()
+// async function start() {
+//   await genresMarkup();
+//   await 
+// }
 
 const formInput = refs.form.elements.query;
 
@@ -340,7 +341,7 @@ async function onClickTopWeekTrands(e) {
 // ================== tranding Startpage ==================
 async function onLoadTranding() {
   showFetchLoader()
-  ress = await fetchTrandingMovieorReadLS()
+  ress = await fetchTrandingMovie()
   // ress = await fetchTrandingMovie();
   options.maxPage = ress.total_pages;
   galleryArrayMarkup(ress);
@@ -373,18 +374,18 @@ async function onLoadTranding() {
 function galleryArrayMarkup(array) {
   console.log(array);
   const galleryMarkup = array.results
-    .map(({ poster_path, original_title, vote_average, release_date, genre_ids }) => {
-      console.log('genre_ids',genre_ids);
+    .map(({ poster_path, original_title,title, vote_average, release_date, genre_ids }) => {
+      // console.log('genre_ids',genre_ids);
       return `<li class="gallery-list__item">
 
 
                 <a class="gallery-list__card">
                     <div class="gallery-list__poster">
-                        <img class="gallery-list__img" src="${poster_path?'https://image.tmdb.org/t/p/w400'+poster_path:folder}" alt="${original_title}"  loading="lazy" />
+                        <img class="gallery-list__img" src="${poster_path?'https://image.tmdb.org/t/p/w500'+poster_path:folder}" alt="${title?title:original_title}"  loading="lazy" />
                     </div>
                     </div>
                     <div class="gallery-list__description">
-                    <h2 class="gallery-list__titel">${original_title}</h2>
+                    <h2 class="gallery-list__titel">${title?title:original_title}</h2>
                     <div class="gallery-list__statics">
 
                         <p class="gallery-list__text">${galleryGenresMarkup(genre_ids)?galleryGenresMarkup(genre_ids):'no information'} | <span class="gallery-list__text-aftertext">${new Date(
@@ -432,5 +433,5 @@ console.log(ratings);
 function addListenerOnGalleryCard() {
   const clickedMovieCard = document.querySelectorAll('.gallery-list__item')
   clickedMovieCard.forEach(movie => movie.addEventListener("click", onClickMovieCard));
-    console.log('clickedMovieCard', clickedMovieCard);
+    // console.log('clickedMovieCard', clickedMovieCard);
 }

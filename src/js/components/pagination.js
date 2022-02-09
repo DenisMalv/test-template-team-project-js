@@ -284,7 +284,8 @@ async function onClickEndPageBtn(e) {
 async function onClickCurrentButtonDoIt(e) {
   let response
   if (currentFetch === 'tranding') {
-    response = await fetchTrandingMovieorReadLS()
+    // response = await fetchTrandingMovieorReadLS()
+    response = await fetchTrandingMovie()
     
   }
   if (currentFetch === 'search') {

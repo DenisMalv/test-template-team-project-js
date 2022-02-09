@@ -1,17 +1,24 @@
 export default teaser;
 
-import { fetchTeaser } from './fetchApi';
+import { fetchTeaser,options } from './fetchApi';
 
 let video;
 let href;
 
+
+
+
+// ==============
+// (video.official || video.type === 'trailer') &&
+//       video.site === 'YouTube' && video.iso_639_1 === options.language
+// ================
+
 async function teaser(id) {
   const videos = await fetchTeaser(id);
   video = videos.results.filter(
-    video =>
-      (video.name.includes('Official') || video.name.includes('Trailer')) &&
-      video.site === 'YouTube',
+    video => video.iso_639_1 === options.language && video.site === 'YouTube'  && (video.official || video.type === 'Trailer') 
   )[0];
+  console.log('video',video);
   href = document.querySelector('.js-teaser');
   href.addEventListener('click', onCardClick);
 }

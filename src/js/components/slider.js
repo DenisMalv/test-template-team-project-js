@@ -24,45 +24,72 @@ const sliderOptions = {
   bound: true,
 };
 
+// async function sliderMarkup() {
+//   const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
+//   const sliderList = document.querySelector('.glide__slides');
+//   let indexOfallUl = 0;
+//   sliderList.innerHTML = '';
+
+//   const sliderMarkup = listofFilmforSliderGet.results.map(({ poster_path, vote_average, id, original_title }) => {
+//       if (vote_average > 8) {
+//         indexOfallUl += 1;
+//         return `<li class="glide__slide" style="width: 136px; margin-left: 10px; margin-right: 10px;" data-idx="${id}">
+//         <img class='slider-image' src="${
+//           poster_path ? 'https://image.tmdb.org/t/p/w500' + poster_path : folder
+//         }" alt="${original_title}"/>
+//       </li>`;
+//       }
+//     })
+//     .join('');
+//   console.log('sliderMarkup до', indexOfallUl);
+//   console.log('sliderOptions.perView до', sliderOptions.perView);
+
+//   sliderList.insertAdjacentHTML('beforeend', sliderMarkup);
+//   // if (indexOfallUl <= sliderOptions.perView) {
+//   //   if (indexOfallUl === 1) {
+//   //     sliderOptions.perView = indexOfallUl
+//   //   }
+//   //   sliderOptions.perView = 1
+//   // }
+//   // console.log(sliderOptions.perView);
+//   // console.log('sliderMarkup после ',indexOfallUl);
+//   // console.log('sliderOptions.perView после',sliderOptions.perView);
+//   new Glide('.glide', sliderOptions).mount();
+//   // console.log(sliderMarkup)
+// }
+
 async function sliderMarkup() {
-  const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
+  const listofFilmforSliderGet=JSON.parse(localStorage.getItem('listofFilmforSlider1'))
   const sliderList = document.querySelector('.glide__slides');
   let indexOfallUl = 0;
   sliderList.innerHTML = '';
 
   const sliderMarkup = listofFilmforSliderGet.results.map(({ poster_path, vote_average, id, original_title }) => {
-      if (vote_average > 8) {
         indexOfallUl += 1;
         return `<li class="glide__slide" style="width: 136px; margin-left: 10px; margin-right: 10px;" data-idx="${id}">
         <img class='slider-image' src="${
           poster_path ? 'https://image.tmdb.org/t/p/w500' + poster_path : folder
         }" alt="${original_title}"/>
       </li>`;
-      }
+      
     })
     .join('');
   console.log('sliderMarkup до', indexOfallUl);
   console.log('sliderOptions.perView до', sliderOptions.perView);
 
   sliderList.insertAdjacentHTML('beforeend', sliderMarkup);
-  // if (indexOfallUl <= sliderOptions.perView) {
-  //   if (indexOfallUl === 1) {
-  //     sliderOptions.perView = indexOfallUl
-  //   }
-  //   sliderOptions.perView = 1
-  // }
-  // console.log(sliderOptions.perView);
-  // console.log('sliderMarkup после ',indexOfallUl);
-  // console.log('sliderOptions.perView после',sliderOptions.perView);
+
   new Glide('.glide', sliderOptions).mount();
-  // console.log(sliderMarkup)
+
 }
+
+
 async function onLoadMainPageShowSlider() {
   if (window.innerWidth < 768) {
     return;
   }
   // await fetchTrandingMovieorReadLS()
-  await fetchTrandingMovieForSlider();
+  // await fetchTrandingMovieForSlider();
   console.log('options.pageNumber', refs.listofFilmforSlider);
   console.log('options.listofFilmforSlider', refs.listofFilmforSlider);
   await sliderMarkup();
@@ -71,7 +98,7 @@ async function onLoadMainPageShowSlider() {
 }
 
 function onClickSlide() {
-  const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider'))
+  const listofFilmforSliderGet = JSON.parse(localStorage.getItem('listofFilmforSlider1'))
   const listOfSlides = document.querySelectorAll('.glide__slide');
   console.log('listOfSlides', listOfSlides);
   console.dir(listOfSlides);
@@ -309,6 +336,7 @@ function posterFolder(poster) {
 function sliderModal({
   poster_path,
   original_title,
+  title,
   vote_average,
   vote_count,
   popularity,
@@ -319,12 +347,12 @@ function sliderModal({
             <div class="modal__image-wrapper">
                 <a class="js-teaser" href="#">
                     <img class="modal__image" src="${posterFolder(
-                      poster_path,
-                    )}" alt="original_title" width="394"/>
+    poster_path,
+  )}" alt="${title?title:original_title}original_title" width="394"/>
                 </a>
             </div>
             <div class="modal__info-wrapper">
-                <h2 class="modal__film-titel">${original_title}</h2>
+                <h2 class="modal__film-titel">${title?title:original_title}</h2>
                 <table>
                     <tr class="modal__param">
                         <td class="modal__param-titel">Vote / Votes</td>
@@ -347,7 +375,7 @@ function sliderModal({
                     <tr class="modal__param">
                         <td class="modal__param-titel">Original Title</td>
                         <td class="modal__param-value ">${
-                          original_title ? original_title : 'no information'
+                          title?title:'no information'
                         }</td>
                     </tr>
                     <tr class="modal__param">

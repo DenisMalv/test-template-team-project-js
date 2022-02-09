@@ -13,6 +13,7 @@ const refs = {
 function modalWindowMarkup({
   poster_path,
   original_title,
+  title,
   vote_average,
   vote_count,
   popularity,
@@ -28,7 +29,7 @@ function modalWindowMarkup({
                 </a>
             </div>
             <div class="modal__info-wrapper">
-                <h2 class="modal__film-titel">${original_title}</h2>
+                <h2 class="modal__film-titel">${title?title:original_title}</h2>
                 <table>
                     <tr class="modal__param">
                         <td class="modal__param-titel">Vote / Votes</td>
@@ -44,7 +45,7 @@ function modalWindowMarkup({
                     </tr>
                     <tr class="modal__param">
                         <td class="modal__param-titel">Original Title</td>
-                        <td class="modal__param-value ">${original_title?original_title:'no information'}</td>
+                        <td class="modal__param-value ">${title?title:'no information'}</td>
                     </tr>
                     <tr class="modal__param">
                         <td class="modal__param-titel">Genre</td>
